@@ -61,6 +61,44 @@ class Zenoss(object):
         device_uid = self.find_device(device_name)['uid']
         return self.__session.get('%s/%s/getRRDValue?dsname=%s' % (self.__host, device_uid, dsname)).content
 
+    def get_networks(self, device_class='/zport/dmd/Networks', limit=None):
+        """Get a list of all devices.
+
+        """
+        log.info('Getting all devices')
+        return self.__router_request(
+            'NetworkRouter', 'getIpAddresses',
+            data=[{
+                'uid': device_class,
+                'params': {},
+                'limit': limit,
+                "sort": 'name'
+            }]
+        )
+
+    def get_network_info(self, uid='/zport/dmd/Networks'):
+        """Get a list of all devices.
+
+        """
+        log.info('Getting all devices')
+        return self.__router_request(
+            'NetworkRouter',
+            'getInfo',
+            data=[{
+                'uid': uid,
+            }]
+        )
+
+    def get_network_tree(self):
+        """Get a list of all devices.
+
+        """
+        log.info('Getting all devices')
+        return self.__router_request(
+            'NetworkRouter',
+            'getTree',
+        )
+
     def get_devices(self, device_class='/zport/dmd/Devices', limit=None):
         """Get a list of all devices.
 
